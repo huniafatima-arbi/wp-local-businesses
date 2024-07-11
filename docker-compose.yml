@@ -1,0 +1,32 @@
+version: "3.9"
+    
+services:
+  db:
+    platform: linux/x86_64
+    image: mysql:8.0
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Sql526032@
+      MYSQL_DATABASE: hnwpapp
+      MYSQL_USER: hn-admin
+      MYSQL_PASSWORD: hn-admin
+    
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    volumes:
+      - wordpress_data:/var/www/html
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: hn-admin
+      WORDPRESS_DB_PASSWORD: hn-admin
+      WORDPRESS_DB_NAME: hnwpapp
+volumes:
+  db_data: {}
+  wordpress_data: {}
